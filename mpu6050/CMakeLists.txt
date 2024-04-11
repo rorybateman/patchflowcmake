@@ -21,4 +21,4 @@ target_link_libraries(mpu pico_stdlib hardware_i2c)
 pico_add_extra_outputs(mpu)
 
 # add url via pico_set_program_url
-example_auto_set_url(mpu)
+#example_auto_set_url(mpu)
