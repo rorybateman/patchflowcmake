@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-project(hello_world)
+project(eulerAngleExample)
 
 # not quite sure what this is doing tbh
 set(CMAKE_C_STANDARD 11)
@@ -26,5 +26,3 @@ pico_enable_stdio_uart(eulerAngleExample 0)
 # create map/bin/hex file etc.
 pico_add_extra_outputs(eulerAngleExample)
 
-# add url via pico_set_program_url
-example_auto_set_url(eulerAngleExample)
