@@ -33,13 +33,7 @@
 // By default these devices  are on bus address 0x68
 static int addr = 0x68;
 
-while (!tud_cdc_connected()) {
-    sleep_ms(100);
-}
 
-printf("tud_cdc_connected()\n");
-
-printf("mk4");
 #ifdef i2c_default
 static void mpu6050_reset() {
     printf("mk4");
