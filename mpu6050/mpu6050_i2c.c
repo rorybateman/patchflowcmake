@@ -101,7 +101,7 @@ int main() {
 
     while (1) {
         mpu6050_read_raw(acceleration, gyro, &temp);
-
+        printf("run");
         // These are the raw numbers from the chip, so will need tweaking to be really useful.
         // See the datasheet for more information
         printf("Acc. X = %d, Y = %d, Z = %d\n", acceleration[0], acceleration[1], acceleration[2]);
