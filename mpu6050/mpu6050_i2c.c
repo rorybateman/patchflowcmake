@@ -9,7 +9,7 @@
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "hardware/i2c.h"
-printf("mk5");
+
 /* Example code to talk to a MPU6050 MEMS accelerometer and gyroscope
 
    This is taking to simple approach of simply reading registers. It's perfectly
