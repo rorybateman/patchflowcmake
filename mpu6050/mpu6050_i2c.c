@@ -79,6 +79,7 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 
 int main() {
     stdio_init_all();
+    printf("mk1");
 #if !defined(i2c_default) || !defined(PICO_DEFAULT_I2C_SDA_PIN) || !defined(PICO_DEFAULT_I2C_SCL_PIN)
     #warning i2c/mpu6050_i2c example requires a board with I2C pins
     puts("Default I2C pins were not defined");
@@ -101,7 +102,7 @@ int main() {
 
     while (1) {
         mpu6050_read_raw(acceleration, gyro, &temp);
-        printf("run");
+        printf("mk1");
         // These are the raw numbers from the chip, so will need tweaking to be really useful.
         // See the datasheet for more information
         printf("Acc. X = %d, Y = %d, Z = %d\n", acceleration[0], acceleration[1], acceleration[2]);
