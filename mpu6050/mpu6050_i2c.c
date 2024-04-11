@@ -36,7 +36,6 @@ static int addr = 0x68;
 
 #ifdef i2c_default
 static void mpu6050_reset() {
-    printf("mk4");
     // Two byte reset. First byte register, second byte data
     // There are a load more options to set up the device in different ways that could be added here
     uint8_t buf[] = {0x6B, 0x80};
@@ -44,7 +43,6 @@ static void mpu6050_reset() {
 }
 
 static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
-    printf("mk3");
     // For this particular device, we send the device the register we want to read
     // first, then subsequently read from the device. The register is auto incrementing
     // so we don't need to keep sending the register we want, just the first.
@@ -82,7 +80,6 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 
 int main() {
     stdio_init_all();
-    printf("mk1");
 #if !defined(i2c_default) || !defined(PICO_DEFAULT_I2C_SDA_PIN) || !defined(PICO_DEFAULT_I2C_SCL_PIN)
     #warning i2c/mpu6050_i2c example requires a board with I2C pins
     puts("Default I2C pins were not defined");
@@ -105,7 +102,6 @@ int main() {
 
     while (1) {
         mpu6050_read_raw(acceleration, gyro, &temp);
-        printf("mk2");
         // These are the raw numbers from the chip, so will need tweaking to be really useful.
         // See the datasheet for more information
         printf("Acc. X = %d, Y = %d, Z = %d\n", acceleration[0], acceleration[1], acceleration[2]);
