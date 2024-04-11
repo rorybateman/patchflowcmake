@@ -1,4 +1,4 @@
-make_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.13)
 
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
