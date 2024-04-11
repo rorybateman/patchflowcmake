@@ -14,8 +14,8 @@ add_executable(mpu
         mpu6050_i2c.c
         )
 # enable usb output, disable uart output
-pico_enable_stdio_usb(mpu 1)
-pico_enable_stdio_uart(mpu 0)
+#pico_enable_stdio_usb(mpu 1)
+#pico_enable_stdio_uart(mpu 0)
 # pull in common dependencies and additional i2c hardware support
 target_link_libraries(mpu pico_stdlib hardware_i2c)
 
