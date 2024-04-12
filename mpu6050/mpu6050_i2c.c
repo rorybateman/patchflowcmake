@@ -46,10 +46,11 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
     // For this particular device, we send the device the register we want to read
     // first, then subsequently read from the device. The register is auto incrementing
     // so we don't need to keep sending the register we want, just the first.
-
+    printf("loading uint buffer...\n");
     uint8_t buffer[6];
 
     // Start reading acceleration registers from register 0x3B for 6 bytes
+    printf("reading aceleration register...\n");
     uint8_t val = 0x3B;
     i2c_write_blocking(i2c_default, addr, &val, 1, true); // true to keep master control of bus
     i2c_read_blocking(i2c_default, addr, buffer, 6, false);
@@ -60,6 +61,7 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 
     // Now gyro data from reg 0x43 for 6 bytes
     // The register is auto incrementing on each read
+    printf("reading gyro register...\n");
     val = 0x43;
     i2c_write_blocking(i2c_default, addr, &val, 1, true);
     i2c_read_blocking(i2c_default, addr, buffer, 6, false);  // False - finished with bus
@@ -71,6 +73,7 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
     // Now temperature from reg 0x41 for 2 bytes
     // The register is auto incrementing on each read
     val = 0x41;
+    printf("reading temperature register...\n");
     i2c_write_blocking(i2c_default, addr, &val, 1, true);
     i2c_read_blocking(i2c_default, addr, buffer, 2, false);  // False - finished with bus
 
@@ -81,7 +84,7 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 int main() {
     stdio_init_all();
     
-    sleep_ms(1000);
+    sleep_ms(3000);
 
     printf("program initiated...\n");
     
