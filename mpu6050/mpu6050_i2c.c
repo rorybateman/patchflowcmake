@@ -80,6 +80,11 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 
 int main() {
     stdio_init_all();
+    
+    sleep_ms(10000);
+
+    printf("Hello, MPU9250! Reading raw data from registers via SPI...\n");
+    
 #if !defined(i2c_default) || !defined(PICO_DEFAULT_I2C_SDA_PIN) || !defined(PICO_DEFAULT_I2C_SCL_PIN)
     #warning i2c/mpu6050_i2c example requires a board with I2C pins
     puts("Default I2C pins were not defined");
