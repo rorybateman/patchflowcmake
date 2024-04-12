@@ -81,9 +81,9 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 int main() {
     stdio_init_all();
     
-    sleep_ms(10000);
+    sleep_ms(1000);
 
-    printf("Hello, MPU9250! Reading raw data from registers via SPI...\n");
+    printf("program initiated...\n");
     
 #if !defined(i2c_default) || !defined(PICO_DEFAULT_I2C_SDA_PIN) || !defined(PICO_DEFAULT_I2C_SCL_PIN)
     #warning i2c/mpu6050_i2c example requires a board with I2C pins
@@ -106,6 +106,7 @@ int main() {
     int16_t acceleration[3], gyro[3], temp;
 
     while (1) {
+        printf("while loop started...\n");
         mpu6050_read_raw(acceleration, gyro, &temp);
         // These are the raw numbers from the chip, so will need tweaking to be really useful.
         // See the datasheet for more information
@@ -116,6 +117,7 @@ int main() {
         printf("Temp. = %f\n", (temp / 340.0) + 36.53);
 
         sleep_ms(100);
+        printf("while loop sleep finished...\n");
     }
 #endif
 }
