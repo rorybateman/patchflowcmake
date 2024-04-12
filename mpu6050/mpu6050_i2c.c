@@ -52,10 +52,13 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
     // Start reading acceleration registers from register 0x3B for 6 bytes
     printf("reading aceleration register...\n");
     uint8_t val = 0x3B;
+    printf("i2c_write_blocking acceleration...\n");
     i2c_write_blocking(i2c_default, addr, &val, 1, true); // true to keep master control of bus
+    printf("i2c_read_blocking acceleraration...\n");
     i2c_read_blocking(i2c_default, addr, buffer, 6, false);
 
     for (int i = 0; i < 3; i++) {
+        printf("for loop acelerometer...\n");
         accel[i] = (buffer[i * 2] << 8 | buffer[(i * 2) + 1]);
     }
 
