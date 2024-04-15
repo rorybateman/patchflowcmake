@@ -36,17 +36,10 @@ static int addr = 0x68;
 
 #ifdef i2c_default
 static void mpu6050_reset() {
-
-	/* Register: PWR_MGMT_1 (0x6B), Value: 0x80, Action: Reset all internal registers (of MPU6050) to default values */
-        uint8_t outputData_Reset[] = {0x6B, 0x80};
-	length = sizeof(outputData_Reset);
-	i2c_write_blocking(i2c_default, MPU6050_I2C_ADDRESS, outputData_Reset, length, false);
-	sleep_ms(1); /* Give the slave device some time to perform the reset */
-	
-	/* Register: PWR_MGMT_1 (0x6B), Value: 0x00, Action: Take MPU6050 out of sleep mode (which is the default state after reset) */
-	uint8_t outputData_WakeUp[] = {0x6B, 0x00};
-	length = sizeof(outputData_WakeUp);
-	i2c_write_blocking(i2c_default, MPU6050_I2C_ADDRESS, outputData_WakeUp, length, false);
+    // Two byte reset. First byte register, second byte data
+    // There are a load more options to set up the device in different ways that could be added here
+    uint8_t buf[] = {0x6B, 0x00};
+    i2c_write_blocking(i2c_default, addr, buf, 2, false);
 }
 
 static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
@@ -60,7 +53,9 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
     printf("reading aceleration register...\n");
     uint8_t val = 0x3B;
     printf("i2c_write_blocking acceleration...\n");
+    sleep(10);
     i2c_write_blocking(i2c_default, addr, &val, 1, true); // true to keep master control of bus
+    sleep(10);
     printf("i2c_read_blocking acceleraration...\n");
     i2c_read_blocking(i2c_default, addr, buffer, 6, false);
 
@@ -134,4 +129,5 @@ int main() {
     }
 #endif
 }
+
 
