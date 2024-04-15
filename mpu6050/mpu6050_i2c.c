@@ -56,6 +56,10 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
     sleep(10);
     i2c_write_blocking(i2c_default, addr, &val, 1, true); // true to keep master control of bus
     sleep(10);
+    printf("false fucntion on i2c wirte defualt...\n");
+    sleep(10);
+    i2c_write_blocking (i2c_default, addr, &val, 2, false); // jsut trying this oout presume it will fail
+    sleep(10);
     printf("i2c_read_blocking acceleraration...\n");
     i2c_read_blocking(i2c_default, addr, buffer, 6, false);
 
