@@ -5,9 +5,8 @@ pin = Pin("LED", Pin.OUT)
 import network
 
 ###varibles#'###
-topic = b"test/topic"
+topic = b"/test/topic"
 message = b"Hello from Pico W!"
-
 
 ### functions###
 def wifi_connect():
@@ -28,30 +27,34 @@ def wifi_connect():
     print('Connected to', ssid)
     print('Network config:', wlan.ifconfig())
 
-def mqtt_connect(topic,message):
+def mqtt_connect():
     # Connect to MQTT broker
     client = MQTTClient("pico_w", "192.168.8.234")  # Pi's IP address
     client.connect()
-    print("Client connected")
-    # Publish a message
-    client.publish(topic, message)
-    print("Message published?")
+    return client
+
+def mqtt_disconnect(client):
     client.disconnect()
 
+def mqtt_publish(client,topic,message):
+    # Publish a message
+    client.publish(topic, message)
 
 ###init code###
 wifi_connect()
+client = mqtt_connect()
 
 ## main code
 print("LED starts flashing...")
 while True:
     try:
         pin.toggle()
-        mqtt_connect(topic,message)
-        sleep(1) # sleep 1sec
+        mqtt_publish(client,topic,message)
+        sleep(0.1) # sleep 1sec
     except KeyboardInterrupt:
         break
 
 ###off code###
+mqtt_disconnect(client)
 pin.off()
 print("Finished.")
