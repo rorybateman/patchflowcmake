@@ -5,7 +5,7 @@ pin = Pin("LED", Pin.OUT)
 import network
 
 ###varibles#'###
-topic = b"/test/topic"
+topic = b"test/topic"
 message = b"Hello from Pico W!"
 
 ### functions###
