@@ -21,7 +21,7 @@ def wifi_connect():
     # Wait for the connection to be established
     while not wlan.isconnected():
         print(".")
-        sleep(300)
+        sleep(1)
         pass
 
     print('Connected to', ssid)

@@ -2,7 +2,6 @@
 import machine
 from machine import Pin
 from utime import sleep
-from umqtt.simple import MQTTClient
 import mpu6050
 import time
 
@@ -23,5 +22,5 @@ mpu.wake()
 while True:
     gyro = mpu.read_gyro_data()
     accel = mpu.read_accel_data()
-    print("Gyro: " + str(gyro) + ", Accel: " + str(accel))
+    print("Gyro: " + str(gyro[0]) + ", Accel: " + str(accel[0]))
     time.sleep(0.1)
