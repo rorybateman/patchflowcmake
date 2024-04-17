@@ -5,10 +5,14 @@ from utime import sleep
 import time
 import utime
 import math
+import network
 
+from umqtt.simple import MQTTClient
 from Kalman import KalmanAngle
 from machine import Pin, I2C
 import mpu6050
+import pico_pub
+
 
 
 
@@ -22,18 +26,31 @@ mpu = mpu6050.MPU6050(i2c)
 # wake up the MPU6050 from sleep
 mpu.wake()
 
-# continuously print the data
-gyro = mpu.read_gyro_data()
-accel = mpu.read_accel_data()
-print("Gyro: " + str(gyro) + ", Accel: " + str(accel))
-time.sleep(0.1)
+###initiallise mqtt comunication
+#varibles#
+topic = b"test/topic"
+#message = b"Hello from Pico W!"
+pico_pub.wifi_connect()
+client = pico_pub.mqtt_connect()
+mqqt_timer = time.ticks_ms()
+
+##mqtt functions##
+def send_protocal(cur_time,time,message,):
+    if cur_time > time:
+        #i = i + 1
+        #message = message + "  i:" + str(i)
+        pico_pub.mqtt_publish(client,topic,message)
+        time = time + 200
+        return time
+    else:
+        return time
 
 
+### initiallising the angleometer###
 RestrictPitch = True	#Comment out to restrict roll to ±90deg instead - please read: http://www.freescale.com/files/sensors/doc/app_note/AN3461.pdf
 radToDeg = 57.2957786
 kalAngleX = 0
 kalAngleY = 0
-
 kalmanX = KalmanAngle()
 kalmanY = KalmanAngle()
 
@@ -45,8 +62,7 @@ accX = accel[0]
 accY = accel[1]
 accZ = accel[2]
 
-#print(accX,accY,accZ)
-#print(math.sqrt((accY**2)+(accZ**2)))
+
 if (RestrictPitch):
     roll = math.atan2(accY,accZ) * radToDeg
     pitch = math.atan(-accX/math.sqrt((accY**2)+(accZ**2))) * radToDeg
@@ -54,7 +70,6 @@ else:
     roll = math.atan(accY/math.sqrt((accX**2)+(accZ**2))) * radToDeg
     pitch = math.atan2(-accX,accZ) * radToDeg
 
-print(roll)
 kalmanX.setAngle(roll)
 kalmanY.setAngle(pitch)
 gyroXAngle = roll;
@@ -64,6 +79,9 @@ compAngleY = pitch;
 
 timer = time.time()
 flag = 0
+
+### Main code looop###
+
 while True:
     if(flag >100): #Problem with the connection
         print("There is a problem with the connection")
@@ -94,7 +112,7 @@ while True:
 
         gyroXRate = gyroX/131
         gyroYRate = gyroY/131
-
+        
         if (RestrictPitch):
     
             if((roll < -90 and kalAngleX >90) or (roll > 90 and kalAngleX < -90)):
@@ -124,19 +142,20 @@ while True:
 
         #angle = (rate of change of angle) * change in time
         gyroXAngle = gyroXRate * dt
-        gyroYAngle = gyroYAngle * dt
 
         #compAngle = constant * (old_compAngle + angle_obtained_from_gyro) + constant * angle_obtained from accelerometer
         compAngleX = 0.93 * (compAngleX + gyroXRate * dt) + 0.07 * roll
-        compAngleY = 0.93 * (compAngleY + gyroYRate * dt) + 0.07 * pitch
 
         if ((gyroXAngle < -180) or (gyroXAngle > 180)):
             gyroXAngle = kalAngleX
-        if ((gyroYAngle < -180) or (gyroYAngle > 180)):
-            gyroYAngle = kalAngleY
 
-        print("Angle X: " + str(kalAngleX)+"   " +"Angle Y: " + str(kalAngleY))
+        message = "Angle X: " + str(kalAngleX)
+        cur_timer = time.ticks_ms()
+        #send message if timer has elapsed
+        mqqt_timer = send_protocal(cur_timer,mqqt_timer,message)
+        
+        print(message)
         time.sleep(0.005)
 		
     except Exception as exc:
-        flag += 1
+        flag +=1
