@@ -253,7 +253,7 @@ while True:
         #send message if timer has elapsed
         mqqt_timer = send_protocal(cur_timer,mqqt_timer,message)
         
-        #print(message)
+        print(message)
         time.sleep(0.005)
 		
     except Exception as exc:
