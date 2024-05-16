@@ -116,12 +116,12 @@ def send_protocal(cur_time,time,message):
         
         mqtt_publish(client,"angle/mpu",message)
         
-        mqtt_publish(client,"hall/reading",str(sensor.pulse_count))
+        mqtt_publish(client,"data/data", message +","+ str(sensor.pulse_count) +","+ str(time_start + cur_time))
         
-        mqtt_publish(client,"time/time",str(time_start + cur_time))
+        #mqtt_publish(client,"time/time",str(time_start + cur_time))
         
         sensor.pulse_count = 0
-        time = time + 100
+        time = time + 50
         #
         return time
     else:
@@ -168,7 +168,7 @@ marker = 0
 while True:
     if(flag >100): #Problem with the connection
         #print("There is a problem with the connection")
-        pico_pub.mqtt_publish(client,"angle/status","There is a problem with the connection")
+        #pico_pub.mqtt_publish(client,"angle/status","There is a problem with the connection")
         flag=0
         continue
     try:
